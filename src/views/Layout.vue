@@ -1,6 +1,8 @@
 <template>
+  <!-- 顶部通栏导航 -->
   <AppTopNav />
-  <header>头部导航栏</header>
+  <!-- 头部 -->
+  <AppHeader />
   <!-- 主体区域 -->
   <main>
     <!-- 二级路由 -->
@@ -11,10 +13,12 @@
 
 <script>
 import AppTopNav from '@/components/app-topnav.vue'
+import AppHeader from '@/components/app-header.vue'
 export default {
   name: 'xtx-layout',
   components: {
-    AppTopNav
+    AppTopNav,
+    AppHeader
   },
   setup() {}
 }
