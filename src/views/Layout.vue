@@ -1,5 +1,5 @@
 <template>
-  <nav>顶部通栏</nav>
+  <AppTopNav />
   <header>头部导航栏</header>
   <!-- 主体区域 -->
   <main>
@@ -10,8 +10,12 @@
 </template>
 
 <script>
+import AppTopNav from '@/components/app-topnav.vue'
 export default {
   name: 'xtx-layout',
+  components: {
+    AppTopNav
+  },
   setup() {}
 }
 </script>
