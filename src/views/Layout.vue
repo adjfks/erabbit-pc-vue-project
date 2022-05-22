@@ -3,6 +3,8 @@
   <AppTopNav />
   <!-- 头部 -->
   <AppHeader />
+  <!-- 吸顶头部 -->
+  <AppHeaderSticky />
   <!-- 主体区域 -->
   <main>
     <!-- 二级路由 -->
@@ -16,13 +18,15 @@
 import AppTopNav from '@/components/app-topnav.vue'
 import AppHeader from '@/components/app-header.vue'
 import AppFooter from '@/components/app-footer.vue'
+import AppHeaderSticky from '@/components/app-header-sticky.vue'
 import { useStore } from 'vuex'
 export default {
   name: 'xtx-layout',
   components: {
     AppTopNav,
     AppHeader,
-    AppFooter
+    AppFooter,
+    AppHeaderSticky
   },
   setup() {
     const store = useStore()
@@ -32,4 +36,8 @@ export default {
 }
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+main {
+  height: 1000px;
+}
+</style>

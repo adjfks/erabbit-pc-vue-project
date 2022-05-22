@@ -34,7 +34,6 @@ export default {
     async getList({ commit }) {
       const { result } = await findAllCategory()
       // 每一项顶级分类增加open属性，控制子分类列表显示与隐藏
-      console.log(result)
       result.forEach((item) => {
         item.open = false
       })
