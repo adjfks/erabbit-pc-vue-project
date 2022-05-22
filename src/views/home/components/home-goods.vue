@@ -1,7 +1,7 @@
 <template>
   <div class="goods-item">
     <Router-link to="/" class="image">
-      <img :src="good.picture" alt="" />
+      <img v-lazyload="good.picture" alt="" />
     </Router-link>
     <p class="name ellipsis-2">{{good.name}}</p>
     <p class="desc">{{good.tag}}</p>

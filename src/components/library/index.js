@@ -5,7 +5,30 @@
 import XtxSkeleton from './xtx-skeleton.vue'
 import XtxCarousel from './xtx-carousel.vue'
 import XtxMore from './xtx-more.vue'
+// 默认显示图片
+import defaultImg from '@/assets/images/200.png'
 
+// 自定义指令：实现图片懒加载
+const defineDirective = (app) => {
+  app.directive('lazyload', {
+    mounted(el, binding) {
+      // 创建观察者
+      const observer = new IntersectionObserver(
+        ([{ isIntersecting }]) => {
+          // 进入可视区
+          if (isIntersecting) {
+            // 停止观察该元素
+            observer.unobserve(el)
+            el.onerror = () => (el.src = defaultImg)
+            el.src = binding.value
+          }
+        },
+        { threshold: 0.01 }
+      )
+      observer.observe(el)
+    }
+  })
+}
 export default {
   // 在app上进行扩展，app提供 component directive 函数
   // 如果要挂载原型 app.config.globalProperties 方式
@@ -13,5 +36,6 @@ export default {
     app.component(XtxSkeleton.name, XtxSkeleton)
     app.component(XtxCarousel.name, XtxCarousel)
     app.component(XtxMore.name, XtxMore)
+    defineDirective(app)
   }
 }

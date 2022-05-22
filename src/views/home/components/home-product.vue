@@ -10,7 +10,7 @@
       <div class="box">
         <!-- 左侧封面 -->
         <Router-link class="cover" :to="`/category/${cate.id}`">
-          <img :src="cate.picture" alt="" />
+          <img v-lazyload="cate.picture" alt="" />
           <strong class="label">
             <span>{{ cate.name }}馆</span>
             <span>{{ cate.saleInfo }}</span>
