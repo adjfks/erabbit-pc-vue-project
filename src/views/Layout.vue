@@ -16,6 +16,7 @@
 import AppTopNav from '@/components/app-topnav.vue'
 import AppHeader from '@/components/app-header.vue'
 import AppFooter from '@/components/app-footer.vue'
+import { useStore } from 'vuex'
 export default {
   name: 'xtx-layout',
   components: {
@@ -23,7 +24,11 @@ export default {
     AppHeader,
     AppFooter
   },
-  setup() {}
+  setup() {
+    const store = useStore()
+    // 触发actions分类获取数据
+    store.dispatch('category/getList')
+  }
 }
 </script>
 
