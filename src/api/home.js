@@ -25,3 +25,12 @@ export const findBanner = () => {
 export const findNew = () => {
   return request('home/new', 'get')
 }
+
+/**
+ *人气推荐
+ *@param {}
+ *@returns
+ */
+export const findHot = () => {
+  return request('home/hot', 'get')
+}
