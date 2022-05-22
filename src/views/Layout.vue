@@ -36,8 +36,4 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-main {
-  height: 1000px;
-}
-</style>
+<style lang="less" scoped></style>

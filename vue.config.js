@@ -6,10 +6,11 @@ module.exports = defineConfig({
   pluginOptions: {
     'style-resources-loader': {
       preProcessor: 'less',
-      patterns: [
-        path.resolve(__dirname , './src/assets/styles/variables.less'),
-        path.resolve(__dirname , './src/assets/styles/mixins.less')
-      ]
+      patterns: [path.resolve(__dirname, './src/assets/styles/variables.less'), path.resolve(__dirname, './src/assets/styles/mixins.less')]
     }
+  },
+  devServer: {
+    open: true,
+    host: 'localhost'
   }
 })
