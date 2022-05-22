@@ -16,3 +16,12 @@ export const findBrand = (limit) => {
 export const findBanner = () => {
   return request('/home/banner', 'get')
 }
+
+/**
+ *新鲜好物接口
+ *@param {}
+ *@returns
+ */
+export const findNew = () => {
+  return request('home/new', 'get')
+}
