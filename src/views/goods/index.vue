@@ -1,15 +1,20 @@
 <template>
-  <div class="xtx-goods-page">
+  <div class="xtx-goods-page" v-if="goods">
     <div class="container">
       <!-- 面包屑 -->
       <XtxBread>
         <XtxBreadItem to="/">首页</XtxBreadItem>
-        <XtxBreadItem to="/">手机</XtxBreadItem>
-        <XtxBreadItem to="/">华为</XtxBreadItem>
-        <XtxBreadItem to="/">p30</XtxBreadItem>
+        <XtxBreadItem :to="`/category/${goods.categories[1].id}`">{{ goods.categories[1].name }}</XtxBreadItem>
+        <XtxBreadItem :to="`/category/sub/${goods.categories[0].id}`">{{ goods.categories[0].name }}</XtxBreadItem>
+        <XtxBreadItem>{{ goods.name }}</XtxBreadItem>
       </XtxBread>
       <!-- 商品信息 -->
-      <div class="goods-info"></div>
+      <div class="goods-info">
+        <div class="media">
+          <GoodsImage :images="goods.mainPictures" />
+        </div>
+        <div class="spec"></div>
+      </div>
       <!-- 商品推荐 -->
       <GoodsRelevant />
       <!-- 商品详情 -->
@@ -29,12 +34,43 @@
 
 <script>
 import GoodsRelevant from './components/goods-relevant.vue'
+import GoodsImage from './components/goods-image.vue'
+import { findGoods } from '@/api/product'
+import { useRoute } from 'vue-router'
+import { ref, watch } from 'vue'
 export default {
   name: 'XtxGoodsPage',
   components: {
-    GoodsRelevant
+    GoodsRelevant,
+    GoodsImage
   },
-  setup() {}
+  setup() {
+    const goods = useGoods()
+    console.log(goods.value)
+    return { goods }
+  }
+}
+
+const useGoods = () => {
+  const route = useRoute()
+  const goods = ref(null)
+  watch(
+    () => route.params.id,
+    async (newVal) => {
+      if (route.path === `/product/${newVal}`) {
+        const { result } = await findGoods(newVal)
+        goods.value = result
+        console.log(result)
+        // 让商品数据为null让后使用v-if的组件可以重新销毁和创建
+        // goods.value = null
+        // nextTick(() => {
+        //   goods.value = result
+        // })
+      }
+    },
+    { immediate: true }
+  )
+  return goods
 }
 </script>
 
@@ -42,6 +78,16 @@ export default {
 .goods-info {
   min-height: 600px;
   background: #fff;
+  display: flex;
+  .media {
+    width: 580px;
+    height: 600px;
+    padding: 30px 50px;
+  }
+  .spec {
+    flex: 1;
+    padding: 30px 30px 30px 0;
+  }
 }
 .goods-footer {
   display: flex;
