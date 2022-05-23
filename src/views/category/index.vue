@@ -4,7 +4,9 @@
       <!-- 面包屑 -->
       <XtxBread>
         <XtxBreadItem to="/">首页</XtxBreadItem>
-        <XtxBreadItem to="/">{{ topCategory.name }}</XtxBreadItem>
+        <transition name="fade-right" mode="out-in">
+          <XtxBreadItem to="/" :key="topCategory.id">{{ topCategory.name }}</XtxBreadItem>
+        </transition>
       </XtxBread>
       <!-- 轮播图 -->
       <XtxCarousel :sliders="sliders" style="height: 500px"></XtxCarousel>
@@ -75,14 +77,14 @@ export default {
       return cate
     })
 
-    // 获取单个顶级分类的数据
+    // // 获取单个顶级分类的数据
     // const subList = ref([])
     // onBeforeRouteUpdate(async (to, from) => {
     //   // 仅当 id 更改时才获取用户，例如仅 query 或 hash 值已更改
-    //   if (to.params.id !== from.params.id) {
-    //     console.log(to.params)
-    //     const { result } = await findTopCategory(to.params.id)
-    //     subList.value = result
+    //   if (to.params.id && from.params.id && to.params.id !== from.params.id) {
+    //     findTopCategory(to.params.id).then((data) => {
+    //       subList.value = data.result.children
+    //     })
     //   }
     // })
 
