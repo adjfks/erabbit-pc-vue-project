@@ -1,7 +1,7 @@
 <template>
   <ul class="app-header-nav">
     <li class="home"><RouterLink to="/">首页</RouterLink></li>
-    <li v-for="topCate in topCategoryList" :key="topCate.id" @mouseenter="showSubList(topCate.id)" @mouseleave="hideSubList(topCate.id)">
+    <li v-for="topCate in topCategoryList" :key="topCate.id" @mousemove="showSubList(topCate.id)" @mouseleave="hideSubList(topCate.id)">
       <Router-link :to="`/category/${topCate.id}`" @click="hideSubList(topCate.id)">{{ topCate.name }}</Router-link>
       <!-- layer -->
       <div class="layer" :class="{ open: topCate.open }">

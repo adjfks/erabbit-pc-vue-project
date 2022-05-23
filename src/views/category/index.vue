@@ -88,16 +88,19 @@ export default {
     //   }
     // })
 
+    // 获取顶级分类展示商品的函数
+    const getSubList = () => {
+      findTopCategory(route.params.id).then((data) => {
+        subList.value = data.result.children
+      })
+    }
+
     // 监听地址栏id
     const subList = ref([])
     watch(
       () => route.params.id,
       (newVal) => {
-        if (newVal) {
-          findTopCategory(newVal).then((data) => {
-            subList.value = data.result.children
-          })
-        }
+        if (newVal && route.path === `/category/${newVal}`) getSubList()
       },
       {
         immediate: true
