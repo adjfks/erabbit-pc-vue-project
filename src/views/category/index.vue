@@ -27,18 +27,34 @@
         </ul>
       </div>
       <!-- 不同分类商品 -->
+      <div class="ref-goods" v-for="item in subList" :key="item.id">
+        <!-- 头部标题 -->
+        <div class="head">
+          <h3>- {{ item.name }} -</h3>
+          <p class="tag">{{ item.desc }}</p>
+          <XtxMore />
+        </div>
+        <!-- 主体商品 -->
+        <div class="body">
+          <CategoryGoods v-for="g in item.goods" :key="g.id" :goods="g" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { findBanner } from '@/api/home'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
-import XtxSkeleton from '@/components/library/xtx-skeleton.vue'
+import CategoryGoods from './components/goods-item.vue'
+import { findTopCategory } from '@/api/category'
 export default {
   name: 'TopCategory',
+  components: {
+    CategoryGoods
+  },
   setup() {
     const store = useStore()
     const route = useRoute()
@@ -47,6 +63,7 @@ export default {
     findBanner().then((data) => {
       sliders.value = data.result
     })
+
     // 获取当前顶级分类
     const topCategory = computed(() => {
       let cate = {}
@@ -57,9 +74,36 @@ export default {
       if (item) cate = item
       return cate
     })
-    return { sliders, topCategory }
-  },
-  components: { XtxSkeleton }
+
+    // 获取单个顶级分类的数据
+    // const subList = ref([])
+    // onBeforeRouteUpdate(async (to, from) => {
+    //   // 仅当 id 更改时才获取用户，例如仅 query 或 hash 值已更改
+    //   if (to.params.id !== from.params.id) {
+    //     console.log(to.params)
+    //     const { result } = await findTopCategory(to.params.id)
+    //     subList.value = result
+    //   }
+    // })
+
+    // 监听地址栏id
+    const subList = ref([])
+    watch(
+      () => route.params.id,
+      (newVal) => {
+        if (newVal) {
+          findTopCategory(newVal).then((data) => {
+            subList.value = data.result.children
+          })
+        }
+      },
+      {
+        immediate: true
+      }
+    )
+
+    return { sliders, topCategory, subList }
+  }
 }
 </script>
 
@@ -98,6 +142,31 @@ export default {
           }
         }
       }
+    }
+  }
+  .ref-goods {
+    background-color: #fff;
+    margin-top: 20px;
+    position: relative;
+    .head {
+      .xtx-more {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+      }
+      .tag {
+        text-align: center;
+        color: #999;
+        font-size: 20px;
+        position: relative;
+        top: -20px;
+      }
+    }
+    .body {
+      display: flex;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      padding: 0 65px 30px;
     }
   }
 }
