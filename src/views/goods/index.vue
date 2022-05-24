@@ -15,7 +15,10 @@
           <GoodsSales :goods="goods" />
         </div>
         <div class="spec">
+          <!-- 名字区组件 -->
           <GoodsName :goods="goods" />
+          <!-- 规格组件 -->
+          <GoodsSku :goods="goods" @change="changeSku" />
         </div>
       </div>
       <!-- 商品推荐 -->
@@ -40,6 +43,7 @@ import GoodsRelevant from './components/goods-relevant.vue'
 import GoodsImage from './components/goods-image.vue'
 import GoodsSales from './components/goods-sales.vue'
 import GoodsName from './components/goods-name.vue'
+import GoodsSku from './components/goods-sku.vue'
 import { findGoods } from '@/api/product'
 import { useRoute } from 'vue-router'
 import { ref, watch } from 'vue'
@@ -49,12 +53,22 @@ export default {
     GoodsRelevant,
     GoodsImage,
     GoodsSales,
-    GoodsName
+    GoodsName,
+    GoodsSku
   },
   setup() {
     const goods = useGoods()
     console.log(goods.value)
-    return { goods }
+
+    // 更新sku
+    const changeSku = (sku) => {
+      if (sku.id) {
+        goods.value.price = sku.price
+        goods.value.oldPrice = sku.oldPrice
+        goods.value.inventory = sku.inventory
+      }
+    }
+    return { goods, changeSku }
   }
 }
 
@@ -66,6 +80,15 @@ const useGoods = () => {
     async (newVal) => {
       if (route.path === `/product/${newVal}`) {
         const { result } = await findGoods(newVal)
+
+        // 处理后台数据不规范，规格属性顺序与sku属性顺序不一致
+        result.skus.forEach((sku) => {
+          const sortSpecs = []
+          result.specs.forEach((spec) => {
+            sortSpecs.push(sku.specs.find((item) => item.name === spec.name))
+          })
+          sku.specs = sortSpecs
+        })
         goods.value = result
         console.log(result)
         // 让商品数据为null让后使用v - if的组件可以重新销毁和创建
