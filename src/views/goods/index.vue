@@ -12,8 +12,11 @@
       <div class="goods-info">
         <div class="media">
           <GoodsImage :images="goods.mainPictures" />
+          <GoodsSales :goods="goods" />
         </div>
-        <div class="spec"></div>
+        <div class="spec">
+          <GoodsName :goods="goods" />
+        </div>
       </div>
       <!-- 商品推荐 -->
       <GoodsRelevant />
@@ -35,6 +38,8 @@
 <script>
 import GoodsRelevant from './components/goods-relevant.vue'
 import GoodsImage from './components/goods-image.vue'
+import GoodsSales from './components/goods-sales.vue'
+import GoodsName from './components/goods-name.vue'
 import { findGoods } from '@/api/product'
 import { useRoute } from 'vue-router'
 import { ref, watch } from 'vue'
@@ -42,7 +47,9 @@ export default {
   name: 'XtxGoodsPage',
   components: {
     GoodsRelevant,
-    GoodsImage
+    GoodsImage,
+    GoodsSales,
+    GoodsName
   },
   setup() {
     const goods = useGoods()
@@ -61,7 +68,7 @@ const useGoods = () => {
         const { result } = await findGoods(newVal)
         goods.value = result
         console.log(result)
-        // 让商品数据为null让后使用v-if的组件可以重新销毁和创建
+        // 让商品数据为null让后使用v - if的组件可以重新销毁和创建
         // goods.value = null
         // nextTick(() => {
         //   goods.value = result
