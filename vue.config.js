@@ -11,6 +11,13 @@ module.exports = defineConfig({
   },
   devServer: {
     open: true,
-    host: 'localhost'
+    host: '127.0.0.1',
+    historyApiFallback: true,
+    allowedHosts: 'all'
+  },
+  configureWebpack: {
+    externals: {
+      qc: 'QC'
+    }
   }
 })

@@ -6,10 +6,10 @@
           <li>
             <a href="javascript:;"><i class="iconfont icon-user"></i>{{ profile.account }}</a>
           </li>
-          <li><a href="javascript:;">退出登录</a></li>
+          <li><a href="javascript:;" @click="logout()">退出登录</a></li>
         </template>
-        <li v-else><a href="javascript:;">请先登录</a></li>
-        <li><a href="javascript:;">免费注册</a></li>
+        <li v-else><Router-link to="/login">请先登录</Router-link></li>
+        <li><Router-link to="/login">免费注册</Router-link></li>
         <li><a href="javascript:;">我的订单</a></li>
         <li><a href="javascript:;">会员中心</a></li>
         <li><a href="javascript:;">帮助中心</a></li>
@@ -25,6 +25,7 @@
 <script>
 import { useStore } from 'vuex'
 import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 export default {
   name: 'AppTopNav',
   setup() {
@@ -33,7 +34,14 @@ export default {
     const profile = computed(() => {
       return store.state.user.profile
     })
-    return { profile }
+
+    // 退出登录
+    const router = useRouter()
+    const logout = () => {
+      store.commit('user/setUser', {})
+      router.push('/login')
+    }
+    return { profile, logout }
   }
 }
 </script>
