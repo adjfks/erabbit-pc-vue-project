@@ -20,7 +20,7 @@
           <!-- 规格组件 -->
           <GoodsSku :goods="goods" @change="changeSku" />
           <XtxNumbox v-model="num" :max="goods.inventory" />
-          <XtxButton type="primary" style="margin-top: 20px">加入购物车</XtxButton>
+          <XtxButton type="primary" style="margin-top: 20px" @click="insertCart">加入购物车</XtxButton>
         </div>
       </div>
       <!-- 商品推荐 -->
@@ -54,7 +54,8 @@ import GoodsHot from './components/goods-hot.vue'
 import GoodsWarn from './components/goods-warn.vue'
 import { findGoods } from '@/api/product'
 import { useRoute } from 'vue-router'
-import { provide, ref, watch } from 'vue'
+import { useStore } from 'vuex'
+import { getCurrentInstance, provide, ref, watch } from 'vue'
 import XtxNumbox from '../../components/library/xtx-numbox.vue'
 export default {
   name: 'XtxGoodsPage',
@@ -74,19 +75,54 @@ export default {
 
     // 更新sku
     const changeSku = (sku) => {
-      if (sku.id) {
+      console.log(sku)
+      if (sku.skuId) {
         goods.value.price = sku.price
         goods.value.oldPrice = sku.oldPrice
         goods.value.inventory = sku.inventory
+        currSku.value = sku.skuId
+      } else {
+        currSku.value = null
       }
     }
 
+    // 当前选择的商品
+    const currSku = ref(null)
+    const instance = getCurrentInstance()
+    const store = useStore()
     // 选择的商品数量
     const num = ref(1)
+    // 加入购物车
+    const insertCart = () => {
+      if (!currSku.value) {
+        return instance.proxy.$message({ type: 'error', text: '请选择商品规格' })
+      }
+      if (num.value > goods.inventory) {
+        return instance.proxy.$message({ type: 'error', text: '库存不足' })
+      }
+      // 提交加入购物车操作
+      store
+        .dispatch('cart/insertCart', {
+          id: goods.value.id,
+          skuId: currSku.value.skuId,
+          name: goods.value.name,
+          picture: goods.value.mainPictures[0],
+          price: currSku.value.price,
+          nowPrice: currSku.value.price,
+          count: num.value,
+          attrsText: currSku.value.specsText,
+          selected: true,
+          isEffective: true,
+          stock: currSku.value.inventory
+        })
+        .then((data) => {
+          instance.proxy.$message({ type: 'success', text: '加入购物车成功！' })
+        })
+    }
 
     // 向子孙提供goods数据
     provide('goods', goods)
-    return { goods, num, changeSku }
+    return { goods, num, changeSku, insertCart }
   }
 }
 
