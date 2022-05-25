@@ -11,6 +11,7 @@
 // 1. 路径 2. 是否加载子目录 3.匹配的正则表达式
 import defaultImg from '@/assets/images/200.png'
 import Message from './Message'
+import Confirm from './Confirm'
 const importFn = require.context('./', false, /\.vue$/)
 
 // 自定义指令：实现图片懒加载
@@ -49,5 +50,6 @@ export default {
     defineDirective(app)
     // 如果你想挂载全局的属性，能够通过组件实例调用的属性   this.$message
     app.config.globalProperties.$message = Message // 原型函数
+    app.config.globalProperties.$confirm = Confirm // 原型函数
   }
 }

@@ -75,12 +75,12 @@ export default {
 
     // 更新sku
     const changeSku = (sku) => {
-      console.log(sku)
+      console.log('currSku', sku)
       if (sku.skuId) {
         goods.value.price = sku.price
         goods.value.oldPrice = sku.oldPrice
         goods.value.inventory = sku.inventory
-        currSku.value = sku.skuId
+        currSku.value = sku
       } else {
         currSku.value = null
       }
@@ -144,6 +144,7 @@ const useGoods = () => {
           sku.specs = sortSpecs
         })
         goods.value = result
+        console.log('goods.value', goods.value)
         // 让商品数据为null让后使用v - if的组件可以重新销毁和创建
         // goods.value = null
         // nextTick(() => {
