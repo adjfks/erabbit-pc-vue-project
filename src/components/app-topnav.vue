@@ -11,7 +11,7 @@
         <li v-else><Router-link to="/login">请先登录</Router-link></li>
         <li><Router-link to="/login">免费注册</Router-link></li>
         <li><a href="javascript:;">我的订单</a></li>
-        <li><a href="javascript:;">会员中心</a></li>
+        <li><Router-link to="/member/home">会员中心</Router-link></li>
         <li><a href="javascript:;">帮助中心</a></li>
         <li><a href="javascript:;">关于我们</a></li>
         <li>

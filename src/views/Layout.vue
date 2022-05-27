@@ -1,39 +1,41 @@
 <template>
-  <!-- 顶部通栏导航 -->
-  <AppTopNav />
-  <!-- 头部 -->
+  <!-- 顶部通栏 -->
+  <AppNavbar />
+  <!-- 头部组件 -->
   <AppHeader />
   <!-- 吸顶头部 -->
   <AppHeaderSticky />
-  <!-- 主体区域 -->
-  <main>
+  <!-- 内容容器 -->
+  <div class="app-body">
     <!-- 二级路由 -->
-    <router-view></router-view>
-  </main>
-  <!-- 底部 -->
+    <RouterView />
+  </div>
+  <!-- 底部组件 -->
   <AppFooter />
 </template>
-
 <script>
-import AppTopNav from '@/components/app-topnav.vue'
-import AppHeader from '@/components/app-header.vue'
-import AppFooter from '@/components/app-footer.vue'
-import AppHeaderSticky from '@/components/app-header-sticky.vue'
+import AppNavbar from '@/components/app-topnav'
+import AppHeader from '@/components/app-header'
+import AppFooter from '@/components/app-footer'
+import AppHeaderSticky from '@/components/app-header-sticky'
 import { useStore } from 'vuex'
 export default {
-  name: 'xtx-layout',
+  name: 'Layout',
   components: {
-    AppTopNav,
+    AppNavbar,
     AppHeader,
     AppFooter,
     AppHeaderSticky
   },
+  // 获取下分类数据
   setup() {
     const store = useStore()
-    // 触发actions分类获取数据
     store.dispatch('category/getList')
   }
 }
 </script>
-
-<style lang="less" scoped></style>
+<style scoped lang="less">
+.app-body {
+  min-height: 600px;
+}
+</style>
