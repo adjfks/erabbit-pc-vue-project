@@ -96,7 +96,7 @@ const initSelectedStatus = (goods, skuId) => {
     goods.specs.forEach((spec, i) => {
       const value = sku.specs[i].valueName
       spec.values.forEach((val) => {
-        val.selected = val.name = value
+        val.selected = val.name === value
       })
     })
   }
