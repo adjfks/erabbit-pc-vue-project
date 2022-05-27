@@ -8,7 +8,13 @@
     <div class="option" v-if="active">
       <div class="loading" v-if="loading"></div>
       <template v-else>
-        <span class="ellipsis" v-for="item in currList" :key="item.code" @click="changeCurrList(item)">{{ item.name }}</span>
+        <span
+          class="ellipsis"
+          v-for="item in currList"
+          :key="item.code"
+          @click="changeCurrList(item)"
+          >{{ item.name }}</span
+        >
       </template>
     </div>
   </div>
